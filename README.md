@@ -9,8 +9,8 @@
 **前置**:macOS + [Homebrew](https://brew.sh)(没有的话装一下)。
 
 ```bash
-git clone <这个仓库的地址> whisper-transwithai
-cd whisper-transwithai
+git clone https://github.com/alanqjt/whisper-transwithai-macos.git
+cd whisper-transwithai-macos
 ./install.sh
 ```
 
