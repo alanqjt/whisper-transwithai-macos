@@ -54,3 +54,13 @@ cd whisper-transwithai-macos
 
 ## 文件
 `subtitle.py` 主逻辑 · `subtitle_gui.py` 界面 · `make_icon.py` 生成图标 · `install.sh` 安装器 · `requirements.txt` 依赖。
+
+## 许可与致谢
+
+本项目代码以 **MIT** 许可证开源(见 [LICENSE](LICENSE))。
+
+本工具的日→中能力基于 **[TransWithAI](https://github.com/TransWithAI/Faster-Whisper-TransWithAI-ChickenRice)** 提供的模型,特此致谢:
+- 语音翻译模型 [`chickenrice0721/whisper-large-v2-translate-zh-v0.2-st-ct2`](https://huggingface.co/chickenrice0721/whisper-large-v2-translate-zh-v0.2-st-ct2)(Apache-2.0)
+- 上游项目 Faster-Whisper-TransWithAI-ChickenRice(MIT)
+
+同时基于 [faster-whisper](https://github.com/SYSTRAN/faster-whisper)、[OpenAI Whisper](https://github.com/openai/whisper)、[Argos Translate](https://github.com/argosopentech/argos-translate) 等开源项目。
