@@ -1,0 +1,9 @@
+# 精简依赖:只跑 faster-whisper 引擎(覆盖 GUI 所有预设),不含 torch/mlx。
+# 如需 openai-whisper(--engine whisper)或 mlx(--engine mlx),另装:
+#   pip install openai-whisper        # 拉 torch, 体积大
+#   pip install mlx-whisper           # 仅 Apple Silicon
+faster-whisper==1.2.1
+argostranslate==1.9.6
+tkinterdnd2==0.5.0
+Send2Trash==2.1.0
+pillow==12.2.0

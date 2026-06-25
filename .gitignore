@@ -1,0 +1,9 @@
+# 由 install.sh 在各自机器上生成 / 机器相关, 不入库
+.venv/
+sub
+subtitle-gui
+__pycache__/
+*.pyc
+.DS_Store
+*.srt
+*.sub.mp4
