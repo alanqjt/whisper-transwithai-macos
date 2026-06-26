@@ -19,6 +19,11 @@
 </p>
 
 <p align="center">
+  <img src="assets/result.png" width="720"><br>
+  <sub><b>处理完成</b> · 自动输出 <code>.zh.srt</code> 字幕与 <code>.zh.sub.mp4</code> 内嵌软字幕视频</sub>
+</p>
+
+<p align="center">
   <img src="assets/install.png" width="560"><br>
   <sub><b>一键安装</b> · <code>./install.sh</code> 自动配好环境并生成 App</sub>
 </p>
