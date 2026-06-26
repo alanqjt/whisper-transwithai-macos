@@ -43,11 +43,6 @@ cd whisper-transwithai-macos
 ./install.sh
 ```
 
-> 国内若 HTTPS clone 超时,改用 **SSH**(需已在 GitHub 配好 SSH key):
-> ```bash
-> git clone git@github.com:alanqjt/whisper-transwithai-macos.git
-> ```
-
 `install.sh` 会自动:装 `ffmpeg` 和 `python-tk@3.13` → 建虚拟环境装依赖 → 生成命令行工具和 **Whisper TransWithAI.app**(放进 `~/Applications`)。
 
 装完在 **Launchpad / Spotlight / 应用程序** 里就能找到 **Whisper TransWithAI**。
