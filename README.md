@@ -1,22 +1,32 @@
-# Whisper TransWithAI — 视频自动加中文字幕(macOS)
+<div align="center">
 
-把视频自动转写并翻译成中文字幕,带图形界面、批量处理,可同时输出 `.srt` 和内嵌软字幕的视频。
+<img src="assets/icon.png" width="116" alt="Whisper TransWithAI">
 
-管线:`视频 → faster-whisper 识别(带时间轴, VAD 抗幻觉)→ 翻译/语音翻译 → 中文 .srt (+ 软字幕视频)`
+# Whisper TransWithAI
+
+**视频自动加中文字幕** · macOS · 图形界面 + 批量处理<br>
+自动转写并翻译,输出 `.srt` 字幕与内嵌软字幕的视频
+
+</div>
+
+管线:`视频 → faster-whisper 识别(带时间轴, VAD 抗幻觉)→ 翻译 / 语音翻译 → 中文 .srt (+ 软字幕视频)`
 
 ## 预览
 
 <p align="center">
-  <img src="assets/gui.png" width="680"><br>
-  <em>图形界面 · 拖入视频 → 选模式 → 开始处理</em>
+  <img src="assets/gui.png" width="720"><br>
+  <sub><b>图形界面</b> · 拖入视频 → 选模式 → 开始处理(日志、进度实时显示)</sub>
 </p>
 
-<table>
-<tr>
-<td align="center"><img src="assets/app-icon.png" width="120"><br><sub>应用图标</sub></td>
-<td align="center"><img src="assets/install.png" width="480"><br><sub>一键安装(<code>./install.sh</code> 跑完即生成 App)</sub></td>
-</tr>
-</table>
+<p align="center">
+  <img src="assets/install.png" width="560"><br>
+  <sub><b>一键安装</b> · <code>./install.sh</code> 自动配好环境并生成 App</sub>
+</p>
+
+<p align="center">
+  <img src="assets/app-icon.png" width="150"><br>
+  <sub>装好后在 Launchpad / 应用程序 里的样子</sub>
+</p>
 
 ## 安装
 
