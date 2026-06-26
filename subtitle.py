@@ -22,6 +22,11 @@ import sys
 import urllib.request
 from pathlib import Path
 
+# 国内网络默认走 HuggingFace 镜像, 并关闭 xet(镜像不代理 xet 通道, 否则下载会失败)。
+# 想用官方源: 运行前 export HF_ENDPOINT=https://huggingface.co
+os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
+os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
+
 VIDEO_EXTS = {".mp4", ".mkv", ".mov", ".avi", ".webm", ".flv", ".m4v",
               ".ts", ".mpg", ".mpeg", ".wmv", ".m4a", ".mp3", ".wav", ".flac"}
 

@@ -18,7 +18,8 @@ cd whisper-transwithai-macos
 
 装完在 **Launchpad / Spotlight / 应用程序** 里就能找到 **Whisper TransWithAI**。
 
-> 首次处理日语视频会自动从 HuggingFace 下载语音翻译模型(约 3GB,联网等待,界面有进度);之后缓存复用。
+> 首次处理日语视频会自动下载语音翻译模型(约 3GB),之后缓存复用。
+> 默认走国内镜像 `hf-mirror.com`(并关闭 xet,否则镜像下载会失败)。想用官方源:运行前 `export HF_ENDPOINT=https://huggingface.co`。
 
 ## 图形界面用法
 
