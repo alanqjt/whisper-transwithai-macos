@@ -4,6 +4,20 @@
 
 管线:`视频 → faster-whisper 识别(带时间轴, VAD 抗幻觉)→ 翻译/语音翻译 → 中文 .srt (+ 软字幕视频)`
 
+## 预览
+
+<p align="center">
+  <img src="assets/gui.png" width="680"><br>
+  <em>图形界面 · 拖入视频 → 选模式 → 开始处理</em>
+</p>
+
+<table>
+<tr>
+<td align="center"><img src="assets/app-icon.png" width="120"><br><sub>应用图标</sub></td>
+<td align="center"><img src="assets/install.png" width="480"><br><sub>一键安装(<code>./install.sh</code> 跑完即生成 App)</sub></td>
+</tr>
+</table>
+
 ## 安装
 
 **前置**:macOS + [Homebrew](https://brew.sh)(没有的话装一下)。
