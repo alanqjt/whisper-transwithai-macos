@@ -161,6 +161,52 @@ def burn_subtitles(video: Path, srt: Path, out: Path, font: str = "Heiti SC"):
 
 
 # ------------------------------------------------------------ transcribe
+def _curl(url, out, progress=False, allow_fail=False) -> int:
+    """curl 下载(抗弱网)。progress=True 把进度转发到 stderr(GUI 状态栏可见)。
+    allow_fail=True 用于可选小文件: 404 立即跳过(不死磕), 只重试网络抖动。"""
+    if allow_fail:  # 可选文件(如不一定存在的 vocabulary.txt): 不对 http 错误重试
+        return subprocess.run(["curl", "-L", "-fsS", "--retry", "5", "--retry-delay", "2",
+                               "-o", str(out), url]).returncode
+    # 必需文件(model.bin 等): 续传 + 激进重试(含网络抖动)
+    base = ["curl", "-L", "-C", "-", "--retry", "30", "--retry-delay", "3",
+            "--retry-all-errors"]
+    if progress:
+        cmd = base + ["--progress-bar", "-o", str(out), url]
+        p = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
+                             text=True, bufsize=0)
+        while True:
+            ch = p.stderr.read(1)
+            if not ch:
+                break
+            sys.stderr.write(ch)
+            sys.stderr.flush()
+        p.wait()
+        return p.returncode
+    return subprocess.run(base + ["-sS", "-o", str(out), url]).returncode
+
+
+def robust_download(repo: str) -> str:
+    """用 curl 从 HF 镜像把模型稳稳下到本地目录并返回该目录(供 faster-whisper 直接加载)。
+    绕开 huggingface_hub(其弱网下 HEAD 重试不足、易 LocalEntryNotFoundError)。"""
+    endpoint = os.environ.get("HF_ENDPOINT", "https://hf-mirror.com").rstrip("/")
+    dest = Path.home() / ".cache" / "whisper-transwithai" / repo.replace("/", "__")
+    if (dest / ".done").exists():
+        return str(dest)
+    dest.mkdir(parents=True, exist_ok=True)
+    log(f"[模型] 用 curl 从 {endpoint} 下载(抗弱网, 断了自动续传): {repo}")
+    for f in ("config.json", "tokenizer.json", "vocabulary.json",
+              "vocabulary.txt", "preprocessor_config.json"):
+        _curl(f"{endpoint}/{repo}/resolve/main/{f}", dest / f, allow_fail=True)
+    log("[模型] 下载 model.bin(大文件, 进度见底部状态栏)...")
+    rc = _curl(f"{endpoint}/{repo}/resolve/main/model.bin", dest / "model.bin", progress=True)
+    mb = dest / "model.bin"
+    if not (mb.exists() and mb.stat().st_size > 1_000_000):
+        raise RuntimeError(f"model.bin 下载失败 (curl rc={rc})")
+    (dest / ".done").touch()
+    log("[模型] 下载完成。")
+    return str(dest)
+
+
 def _model_cached(model: str) -> bool:
     """faster-whisper 模型是否已在本地(本地路径 或 HuggingFace 缓存)。"""
     if os.path.isdir(os.path.expanduser(model)):
@@ -182,12 +228,20 @@ def transcribe(media: Path, engine: str, model: str, language: str,
     if engine == "faster":
         # faster-whisper: 自带 Silero VAD, 只转写有人声区间, 从源头挡掉音乐/静音幻觉
         from faster_whisper import WhisperModel
-        if not _model_cached(model):
-            log(f"[模型] 首次使用, 本地没有此模型, 开始从 HuggingFace 自动下载: {model}")
-            log("[模型] 体积较大(约 1–3GB), 视网速可能需数分钟~数十分钟; 进度见底部状态栏。"
-                "完成后会缓存复用, 以后无需重下。")
+        try:
+            from faster_whisper.utils import _MODELS as _FW_MODELS
+        except Exception:
+            _FW_MODELS = {}
+        # 模型解析: 本地目录直接用; 尺寸名/仓库名 -> 用 curl 稳下到本地(抗弱网), 已下秒返回
+        load = os.path.expanduser(model)
+        if not os.path.isdir(load):
+            repo = _FW_MODELS.get(model, model)
+            if "/" in repo:
+                load = robust_download(repo)
+            else:
+                load = model  # 兜底: 交给 faster-whisper 自行下载
         log(f"[faster-whisper] model={model} task={task} vad={vad} (CPU/int8)...")
-        m = WhisperModel(model, device="cpu", compute_type="int8")
+        m = WhisperModel(load, device="cpu", compute_type="int8")
         log("[模型] 已加载就绪。")
         seg_iter, info = m.transcribe(
             str(media), language=lang, task=task,
